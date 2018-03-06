@@ -12,19 +12,56 @@
 #define LED_DIR "/sys/class/gpio/gpio60/direction"//set direction as output
 #define BUTTON_IN "/sys/class/gpio/gpio30/direction"//set button direction as input
 
+pthread_mutex_t lock;
+pthread_mutex_t mutex;//condition variable needs a mutex
+int shared_data = 1;//some number
 void *thread_function();//thread using function to toggle led
 
 int main(void)
 {
-	pthread_t thread_ID;//id number of thread
-	void *exit_status;//exit of NULL
 
-	//create thread here
-	pthread_create(&thread_ID, NULL, thread_function, 0);
-	//wait for thread to terminate
-	pthread_join(thread_ID, &exit_status);
+        pthread_t thread_ID;//id number of thread
+        void *exit_status;//exit of NULL
+	int i;
 
-	return 0;
+	//
+	pthread_cond_init(&lock, NULL);
+	//initialize the mutex
+        pthread_mutex_init(&lock, NULL);
+
+        //create thread here
+        pthread_create(&thread_ID, NULL, thread_function, 0);
+
+	//wait for the shared data to reach zero
+	pthread_mutex_lock(&mutex);
+
+	while(shared_data !=0)
+		pthread_cond_wait(&lock, &mutex);
+	pthread_mutex_unlock(&mutex);
+
+        //wait for thread to terminate
+        pthread_join(thread_ID, &exit_status);
+
+	pthread_mutex_destory(&mutex);
+	pthread_cond_destroy(&lock);
+
+        return 0;
+}
+
+void *thread_function(void *arg)
+{
+	//doing something
+	while(shared_data > 0)
+	{
+		//the other thread sees the shared data 
+		pthread_mutex_lock(&mutex);
+		--shared_data;
+		pthread_mutex_unlock(&mutex);
+	}
+	//signal the condition
+	pthread_cond_signal(& lock);
+
+	return NULL;
 }
 
 //thread one but points to function which is void.
@@ -40,7 +77,6 @@ void *thread_function(void)
 
 //Create and open file named Button
         FILE *Button;
-
 //set direction of LED by writing to file
         Button = fopen(LED_DIR, "w");
         fwrite(str_Out, 1, sizeof(str_Out), Button);
@@ -52,17 +88,18 @@ void *thread_function(void)
         fclose(Button);//close file
 
 
-	for(int i=0; i<1000; i++)//10 seconds
+        for(int i=0; i<1000; i++)//10 seconds
         {
-        		//Button read
-                        Button = fopen(BUTTON, "r+");//opened file path reads gpio60 and$
-                        fscanf(Button, "%i", &buttonVal);//scans a int number to buttonV$
+                        //Button read
+                        Button = fopen(BUTTON, "r+");//opened file path reads gpio60
+                        fscanf(Button, "%i", &buttonVal);//scans a int number to button
                         fclose(Button);//close
 
                         printf("Button = %d\n",buttonVal);
                         //wait for rising edge
 
                         if(buttonVal != oldButtonVal)//if current button is not equal then check
+
                         {
 
                                 if(oldButtonVal== 0 && buttonVal ==1)//if change happens from low to high then do
@@ -81,7 +118,9 @@ void *thread_function(void)
                                 oldButtonVal = buttonVal;//update old button to new and loop again
                         }
 
-         	       usleep(10000);//1 second
-	}
-	return NULL;//return back to thread
+                       usleep(10000);//1 second
+        }
+        return NULL;//return back to thread
 }
+
+
