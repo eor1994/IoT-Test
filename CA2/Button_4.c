@@ -35,10 +35,6 @@ int main(void)
 	//wait for the shared data to reach zero
 	pthread_mutex_lock(&mutex);
 
-	while(shared_data !=0)
-		pthread_cond_wait(&lock, &mutex);
-	pthread_mutex_unlock(&mutex);
-
         //wait for thread to terminate
         pthread_join(thread_ID, &exit_status);
 
@@ -46,22 +42,6 @@ int main(void)
 	pthread_cond_destroy(&lock);
 
         return 0;
-}
-
-void *thread_function(void *arg)
-{
-	//doing something
-	while(shared_data > 0)
-	{
-		//the other thread sees the shared data 
-		pthread_mutex_lock(&mutex);
-		--shared_data;
-		pthread_mutex_unlock(&mutex);
-	}
-	//signal the condition
-	pthread_cond_signal(& lock);
-
-	return NULL;
 }
 
 //thread one but points to function which is void.
