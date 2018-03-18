@@ -1,43 +1,40 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h>//standard c functions and declarations
+#include <unistd.h>//used for usleep
 #include <string.h>//used for MACRO = NULL
-#include <pthread.h>>//used for threading
 
-#define LED_PATH "/sys/class/gpio/gpio60/value" //led output direction
-#define BUTTON "/sys/class/gpio/gpio30/value" //button is input direction
-#define LED_DIR "/sys/class/gpio/gpio60/direction"//set direction as output
-#define BUTTON_IN "/sys/class/gpio/gpio30/direction"//set button direction as input
-
-//#define PATH
-
-void sleep();//funciton to delay prorgam by one second
+//defined Paths for LED pin GPIO_31(13)
+#define LED_PATH "/sys/class/gpio/gpio31/value" //led output direction
+#define LED_DIR "/sys/class/gpio/gpio31/direction"//set direction as output
 
 int main(void)
 {
-//set up threads
-	pthread_t thread1, thread2;
-	const char *message1 = "Thread 1";
-	const char *message2 = "Thread 2";
 
-//set direction of pins
-        char str_In[] = "in";
-        char str_Out[] = "out";
+//set up declarations
+	char str_Out[] = "out";//set direction as out, string
 
-//assigned button condition
-        int oldButtonVal = 0;
-        int buttonVal = 0;
+//open file named Button
+        FILE *Button;
 
-	//create threads
-	pthread_create( ,NULL, thred_Button, &value);
+//set direction of LED
+        Button = fopen(LED_DIR, "w");//write to file direction
+        fwrite(str_Out, 1, sizeof(str_Out), Button);//set as output
+        fclose(Button);
 
-	//wait for the thread to terminate
-	pthread_join(thread_ID, &func);
+	while(1)
+	{
+		//turn on LED
+		Button = fopen(LED_PATH,"w");//open and write ti file path
+                fprintf(Button, "1");//write a 1 to turn on LED
+                fclose(Button);//close file
 
-	//only main thread runs now
+		sleep(1);//sleep for 1 second
+
+		//turn off LED
+		Button = fopen(LED_PATH,"w");//open and write to path
+                fprintf(Button, "0");//turn LED off
+                fclose(Button);//close file
+		sleep(1);
+	}
+
 	return 0;
-}
-
-int * (void *ptr)
-{
-
 }

@@ -6,12 +6,13 @@
 #include <string>
 using namespace std;
 
-#define LED_DIR "/sys/class/gpio/gpio3/direction"//set direction of gpio
-#define LED_VAL "/sys/class/gpio/gpio3/value" //path to value for led to be turn on/off
+//set LED Pin to GPIO_50(14)
+#define LED_DIR "/sys/class/gpio/gpio50/direction"//set direction of gpio
+#define LED_VAL "/sys/class/gpio/gpio50/value" //path to value for led to be turn on/off
 
 int main()
 {
-    std::fstream fs;//use class fstream from std to initlaise the fs function
+    ofstream fs;//use class fstream from std to initlaise the fs function
 
     fs.open(LED_DIR);//open file to pathway of GPIO direction
     fs << "out";//set direction of GPIO pin to output
@@ -30,7 +31,7 @@ int main()
    		sleep(1);
    	}
 
-//exit and end program
-    return 0;
+	//exit and end program
+	return 0;
 }
 

@@ -2,7 +2,7 @@
 
 echo out >/sys/class/gpio/gpio30/direction #output on pin 30
 
-for i in {1..100} #loop 100 times
+for i in {1..10000} #loop 10000 times
 
 do
 

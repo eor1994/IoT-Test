@@ -1,12 +1,15 @@
+#!/usr/bin/python
 
 import Adafruit_BBIO.GPIO as GPIO
 import time
 
-GPIO.setup("P9_15", GPIO.OUT)
+led = "P9_15"
+
+GPIO.setup(led, GPIO.OUT)
 
 while True:
-        GPIO.output("P9_15", GPIO.HIGH)
-        time.sleep(0.5)
-        GPIO.output("P9_15", GPIO.LOW)
-        time.sleep(0.5)
+	GPIO.output(led, GPIO.HIGH)
+	time.sleep(1)
+	GPIO.output(led, GPIO.LOW)
+	time.sleep(1)
 
