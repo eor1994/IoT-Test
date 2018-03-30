@@ -7,17 +7,27 @@
 #include <sys/wait.h> //wait()
 #include <sys/types.h>
 
+#define NUM_THREADS 2
+
 #define LED_PATH "/sys/class/gpio/gpio60/value" //led output direction
 #define BUTTON "/sys/class/gpio/gpio30/value" //button is input direction
 #define LED_DIR "/sys/class/gpio/gpio60/direction"//set direction as output
 #define BUTTON_IN "/sys/class/gpio/gpio30/direction"//set button direction as input
 
-void *thread_function();//thread using function to toggle led
+void *thread_LED();//thread using function to toggle led
+void *thread_Button();//thread used to check button condition
+
+//pthread_mutex_lock(&mutex_But);
 
 int main(void)
 {
+
 	pthread_t thread_ID;//id number of thread
 	void *exit_status;//exit of NULL
+
+	//initialise mutex and conditon variables
+	pthread_mutex_init(&,NULL);
+	pthread_cond_inti (&,NULL);
 
 	//create thread here
 	pthread_create(&thread_ID, NULL, thread_function, 0);
@@ -54,7 +64,7 @@ void *thread_function(void)
 
 	for(int i=0; i<1000; i++)//10 seconds
         {
-        		//Button read
+        	//Button read
                         Button = fopen(BUTTON, "r+");//opened file path reads gpio60 and$
                         fscanf(Button, "%i", &buttonVal);//scans a int number to buttonV$
                         fclose(Button);//close

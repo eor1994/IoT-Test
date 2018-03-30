@@ -13,12 +13,13 @@ using namespace std;
 int main()
 {
     ofstream fs;//use class fstream from std to initlaise the fs function
+    int i;
 
     fs.open(LED_DIR);//open file to pathway of GPIO direction
     fs << "out";//set direction of GPIO pin to output
     fs.close();//close file
 
-	while(1)
+	for(i=0; i<5; i++)
     	{
     		fs.open(LED_VAL);//open file to pathway of led value
    		fs << "1";//write a 1 to file

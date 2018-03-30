@@ -14,6 +14,7 @@
 
 pthread_mutex_t lock;
 pthread_mutex_t mutex;//condition variable needs a mutex
+
 int shared_data = 1;//some number
 void *thread_function();//thread using function to toggle led
 

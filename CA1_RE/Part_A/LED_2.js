@@ -1,48 +1,37 @@
-var b = require ('bonescript');
-var led = "GPIO_60";//set output of gpio pin to pin 60 (12)
-var i;
+/*
+*b00072646
+*/
 
-for(i=1; i<100; i++)//loop 99 times
-{
-	LED_on();//change to high
-	sleep(1000);//delay program by 1 second 
-	
-	LED_off();//chnage to low
-	sleep(1000);//delay program by 1 second
-}
+var b = require('bonescript');
 
-//Functions
+   var led = "P9_12";
+   var i;
+   b.pinMode(led, b.OUTPUT);
 
-function LED_on()
-{
-	b.digitalWrite(led,1);//send on to led (HIGH)
-}
+          for(i = 0; i < 5; i++){//loop 5 times -test
+          ledOn();//turn led on with function
+          sleep(1000);//sleep 1 second
+          ledOff();//turn led off
+          sleep(1000);//sleep 1 second
+          }
 
-function LED_off()
-{
-	b.digitalWrite(led,0);//send off to led(LOW)
-}
-
-//function sleep(ms)//function to toggle led and check 
-//{
-//	setTimeout(function()
-//	{
-//	}, ms);
-//}
-
- 
-function sleep(ms){
+ function sleep(ms){//funciton sleep in mili-seconds
           // calling funtion date, that gets the system time.
+          //getTime gets the number of miliseconds since 1970 00:00:00
+          // returns the number of miliseconds and the specific date.
+          //adds ms from set in sleep.
           ms = ms + new Date().getTime();
           while (new Date() < ms){
           }
-}
+   }
 
-function LED_Dir()
-{
-	b.pinMode (led, b.OUTPUT);
-}
+   function ledOn(){//writes to the gpio to turn on
+          b.digitalWrite(led, 1);
+          }
 
+   function ledOff(){//writes to the gpio in to turn off
+          b.digitalWrite(led, 0);
+          }
 
-//finish
-process.exit(0);//finish
+   process.exit(0);//finish
+

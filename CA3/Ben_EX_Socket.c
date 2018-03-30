@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
 
 	//create file descriptor
 	int listenfd, connfd, n;
-
 	//Socket Structures
 	struct sockaddr_in servaddr, cliaddr;//local variable whis is cliaddr and is full of shite.
 	//another structure for input address added

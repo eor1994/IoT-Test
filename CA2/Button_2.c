@@ -8,9 +8,9 @@ CA: ca2 - part 2
 #include <stdlib.h> //exit()
 #include <sys/wait.h> //wait()
 
-int main(int ac, char *av[])//
+int main(int ac, char *av[])
 {
-	int pid;
+	int pid;//declare pid
 	pid = fork();//fork process
 
 //error check

@@ -11,6 +11,7 @@ int main(void)
 
 //set up declarations
 	char str_Out[] = "out";//set direction as out, string
+	int i;
 
 //open file named Button
         FILE *Button;
@@ -20,7 +21,7 @@ int main(void)
         fwrite(str_Out, 1, sizeof(str_Out), Button);//set as output
         fclose(Button);
 
-	while(1)
+	for(i=0; i<5; i++)
 	{
 		//turn on LED
 		Button = fopen(LED_PATH,"w");//open and write ti file path
